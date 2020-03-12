@@ -12,7 +12,6 @@ class App extends React.Component {
         super(props);
         this.state = {
             s: "",
-            pic:[],
             results: [],
             selected: {}
         }
@@ -24,18 +23,15 @@ class App extends React.Component {
     }
 
     gallery=()=>{
-        axios.get("https://api.themoviedb.org/3/discover/movie?api_key=374c978e327ab1a65801f4731c336115&page=1&language=en-US&sort_by=release_date&page=2")
+        axios.get("https://api.themoviedb.org/3/discover/movie?api_key=374c978e327ab1a65801f4731c336115&page=1&language=en-US&sort_by=release_date&page=5")
             .then((res) => {
-                    const picture=res.data.results
+                    const resultss=res.data.results
                     this.setState({
-                            pic:picture
-
+                            results:resultss
                         }
                     )
-
                 }
             )
-
     }
 
     handleInput = (e) => {
@@ -52,7 +48,6 @@ class App extends React.Component {
             axios.get(apiurl + this.state.s)
                 .then((res) => {
                         const resultss=res.data.results
-
                         this.setState({
                                 results:resultss
                             }
@@ -99,7 +94,7 @@ class App extends React.Component {
 
 
     render() {
-        console.log(this.state.pic)
+        console.log(this.state.results)
         return (
             <div className="App">
                 <header className="App-header">
@@ -107,7 +102,7 @@ class App extends React.Component {
                 </header>
                 <main>
                     <Search handleInput={this.handleInput} search={this.search}/>
-                    <Gallery results={this.state.pic}/>
+                    <Gallery results={this.state.results} openpopup={this.openpopup}/>
                     <Results results={this.state.results} openpopup={this.openpopup} />
                     <Order ordername={this.ordername} orderyear={this.orderyear}/>
                     {(typeof this.state.selected.title != "undefined")? <Popup selected={this.state.selected} closepopup={this.closepopup}/>:false}
